@@ -24,7 +24,7 @@ class UpdateCalificationRequest extends FormRequest
     {
         return [
             'product_id'=>'exists:products,id',
-            'score'=>'integer|min:1|max:10'
+            'score'=>'numeric|min:1|max:10'
         ];
     }
 }
