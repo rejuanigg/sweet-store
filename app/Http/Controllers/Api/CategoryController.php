@@ -16,6 +16,11 @@ class CategoryController extends Controller
         private CategoryService $service
     ){}
 
+    public function show(Category $category)
+    {
+        return new CategoryResource($category);
+    }
+
     public function index()
     {
         $myCategories = Category::all();
