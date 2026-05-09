@@ -23,7 +23,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status'=>'string|in:waiting,proccessing,completed'
+            'status'=>'string|in:waiting,proccessing,completed,cancelled'
         ];
     }
 }
