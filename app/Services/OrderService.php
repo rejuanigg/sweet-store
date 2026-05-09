@@ -46,8 +46,7 @@ class OrderService
     public function update(Order $order, array $data)
     {
         $order->update($data);
-        return $order;
-    }
+        return $order->load('orderDetails');    }
 }
 
 ?>
