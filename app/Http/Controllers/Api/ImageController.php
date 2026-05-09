@@ -79,7 +79,12 @@ class ImageController extends Controller
 
     public function destroy(Image $image)
     {
-        $this->cloudinary->uploadApi()->destroy($image->public_id);
+        if($image->public_id){
+            $this->cloudinary->uploadApi()->destroy($image->public_id);
+        }
+
         $this->service->destroy($image);
+
+        return response()->noContent();
     }
 }
