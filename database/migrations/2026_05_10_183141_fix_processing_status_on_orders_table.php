@@ -12,6 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::table('orders', function (Blueprint $table) {
+            $table->enum('status', [
+                'waiting',
+                'proccessing',
+                'processing',
+                'completed',
+                'cancelled'
+            ])->change();
+        });
+
         DB::table('orders')
             ->where('status', 'proccessing')
             ->update([
@@ -28,12 +38,21 @@ return new class extends Migration
         });
     }
 
-    public function down(): void
-    {
-
     /**
      * Reverse the migrations.
      */
+    public function down(): void
+    {
+        Schema::table('orders', function (Blueprint $table) {
+            $table->enum('status', [
+                'waiting',
+                'proccessing',
+                'processing',
+                'completed',
+                'cancelled'
+            ])->change();
+        });
+
         DB::table('orders')
             ->where('status', 'processing')
             ->update([
