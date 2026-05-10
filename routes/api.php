@@ -35,8 +35,7 @@ Route::middleware('auth:sanctum')->group(
         Route::apiResource('products', ProductController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
         Route::apiResource('stocks', StockController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
         Route::apiResource('images', ImageController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
-        Route::apiResource('orders', OrderController::class)->middleware('role:owner,employed')->only('update');
 
-        Route::apiResource('orders', OrderController::class)->only('store', 'show', 'index');
+        Route::apiResource('orders', OrderController::class)->only('store', 'show', 'index', 'update');
         Route::apiResource('products.califications', CalificationController::class)->only('store', 'update', 'destroy');
 });
