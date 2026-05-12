@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(
         Route::get('/me',[AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::patch('/edit_profile', [UserController::class, 'update']);
+        Route::patch('/password', [UserController::class, 'change_password']);
         Route::delete('/delete_profile', [UserController::class, 'destroy']);
 
         Route::apiResource('sections', SectionController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');

@@ -16,7 +16,13 @@ class UserService
 
         return $user;
     }
-
+    public function changePassword(User $user, string $newPassword)
+    {
+        $user->update([
+            'password' => Hash::make($newPassword)
+        ]);
+        return $user;
+    }
     public function update(User $user, array $data)
     {
         $user->update($data);

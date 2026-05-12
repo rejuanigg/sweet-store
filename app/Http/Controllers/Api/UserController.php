@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\SectionResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -33,6 +35,21 @@ class UserController extends Controller
         $resource = new UserResource($newUser);
 
         return $resource->response()->setStatusCode(201);
+    }
+
+    public function change_password(ChangePasswordRequest $request)
+    {
+        $current_password = Hash::check($request->actual_password, $request->user()->password);
+        if ($current_password == true){
+            $new_password = $this->service->changePassword($request->user(), $request->new_password);
+
+            $resource = new UserResource($new_password);
+
+            return $resource->response()->setStatusCode(200);
+        }
+        else{
+            abort(400, 'Bad Request');
+        }
     }
 
     public function update(UpdateUserRequest $request)
