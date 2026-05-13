@@ -69,6 +69,12 @@ class OrderController extends Controller
                     $stocks->quantity = $reinstate;
                     $stocks->save();
                 }
+                if($request->status != 'cancelled' && $order->status == 'cancelled'){
+                    $stocks = $item->product->stocks->first();
+                    $subtract = $stocks->quantity - $item['quantity'];
+                    $stocks->quantity = $subtract;
+                    $stocks->save();
+                }
             }
 
 
