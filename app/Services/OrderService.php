@@ -12,13 +12,6 @@ class OrderService
 {
     public function store(User $user,array $data)
     {
-        $order = Order::create([
-            'user_id'=> $user->id,
-            'datetime'=>now(),
-            'total'=>0,
-            'status'=>'waiting'
-        ]);
-
         $acc = 0;
 
         foreach ($data['products'] as $item)
@@ -30,6 +23,22 @@ class OrderService
                 if ($item['quantity']>$stocks['quantity']){
                     abort(400, 'Unprocessable Entity');
                 }
+
+                $price = $product->price;
+            }
+
+        $order = Order::create([
+            'user_id'=> $user->id,
+            'datetime'=>now(),
+            'total'=>0,
+            'status'=>'waiting'
+        ]);
+
+        foreach ($data['products'] as $item)
+            {
+                $product = Product::find($item['product_id']);
+
+                $stocks = $product->stocks->first();
 
                 $price = $product->price;
 
@@ -50,8 +59,9 @@ class OrderService
 
         $order->update(['total'=>$acc]);
         return $order;
-
     }
+
+
 
     public function update(Order $order, array $data)
     {
