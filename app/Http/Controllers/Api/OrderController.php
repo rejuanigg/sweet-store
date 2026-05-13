@@ -64,7 +64,7 @@ class OrderController extends Controller
         foreach ($order->orderDetails as $item)
             {
                 if($request->status == 'cancelled'){
-                    $stocks = $item->products->stocks->first();
+                    $stocks = $item->product->stocks->first();
                     $reinstate = $stocks->quantity + $item['quantity'];
                     $stocks->quantity = $reinstate;
                     $stocks->save();
