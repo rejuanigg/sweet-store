@@ -25,6 +25,12 @@ class OrderService
             {
                 $product = Product::find($item['product_id']);
 
+                $stocks = $product->stocks->first();
+
+                if ($item['quantity']>$stocks['quantity']){
+                    abort(400, 'Unprocessable Entity');
+                }
+
                 $price = $product->price;
 
                 OrderDetail::create([
@@ -36,6 +42,10 @@ class OrderService
 
                 $acc += $price * $item['quantity'];
 
+                $subtract = $stocks->quantity - $item['quantity'];
+
+                $stocks->quantity = $subtract;
+                $stocks->save();
             }
 
         $order->update(['total'=>$acc]);

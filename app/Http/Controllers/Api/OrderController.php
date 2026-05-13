@@ -61,6 +61,18 @@ class OrderController extends Controller
 
     public function update(Order $order, UpdateOrderRequest $request)
     {
+        foreach ($order->orderDetails as $item)
+            {
+                if($request->status == 'cancelled'){
+                    $stocks = $item->products->stocks->first();
+                    $reinstate = $stocks->quantity + $item['quantity'];
+                    $stocks->quantity = $reinstate;
+                    $stocks->save();
+                }
+            }
+
+
+
         $editOrder = $this->service->update($order, $request->validated());
 
         $resource = new OrderResource($editOrder);
