@@ -27,7 +27,9 @@ class UpdateProductRequest extends FormRequest
             'description'=>'string|min:3|max:5000',
             'price'=>'numeric|min:0',
             'categories' => 'array',
-            'categories.*' => 'integer|exists:categories,id'
+            'categories.*' => 'integer|exists:categories,id',
+            'is_featured' => 'sometimes|boolean',
+            'featured_order' => 'nullable|integer|min:1|max:4',
         ];
     }
 }

@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/products/featured', [ProductController::class, 'featured']);
+
 Route::apiResource('products.califications', CalificationController::class)->only('index');
 Route::apiResource('sections', SectionController::class)->only('index');
 Route::apiResource('categories', CategoryController::class)->only('index');
@@ -22,21 +24,39 @@ Route::apiResource('images', ImageController::class)->only('index');
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(
-    function()
-    {
-        Route::get('/me',[AuthController::class, 'me']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::patch('/edit_profile', [UserController::class, 'update']);
-        Route::patch('/password', [UserController::class, 'change_password']);
-        Route::delete('/delete_profile', [UserController::class, 'destroy']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::patch('/edit_profile', [UserController::class, 'update']);
+    Route::patch('/password', [UserController::class, 'change_password']);
+    Route::delete('/delete_profile', [UserController::class, 'destroy']);
 
-        Route::apiResource('sections', SectionController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
-        Route::apiResource('categories', CategoryController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
-        Route::apiResource('products', ProductController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
-        Route::apiResource('stocks', StockController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
-        Route::apiResource('images', ImageController::class)->middleware('role:owner,employed')->only('store', 'update', 'destroy');
+    Route::patch('/products/{product}/featured', [ProductController::class, 'toggleFeatured'])
+        ->middleware('role:owner,employed');
 
-        Route::apiResource('orders', OrderController::class)->only('store', 'show', 'index', 'update');
-        Route::apiResource('products.califications', CalificationController::class)->only('store', 'update', 'destroy');
+    Route::apiResource('sections', SectionController::class)
+        ->middleware('role:owner,employed')
+        ->only('store', 'update', 'destroy');
+
+    Route::apiResource('categories', CategoryController::class)
+        ->middleware('role:owner,employed')
+        ->only('store', 'update', 'destroy');
+
+    Route::apiResource('products', ProductController::class)
+        ->middleware('role:owner,employed')
+        ->only('store', 'update', 'destroy');
+
+    Route::apiResource('stocks', StockController::class)
+        ->middleware('role:owner,employed')
+        ->only('store', 'update', 'destroy');
+
+    Route::apiResource('images', ImageController::class)
+        ->middleware('role:owner,employed')
+        ->only('store', 'update', 'destroy');
+
+    Route::apiResource('orders', OrderController::class)
+        ->only('store', 'show', 'index', 'update');
+
+    Route::apiResource('products.califications', CalificationController::class)
+        ->only('store', 'update', 'destroy');
 });

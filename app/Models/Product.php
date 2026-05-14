@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    
+
     public function categories():BelongsToMany
     {
         return $this->belongsToMany(Category::class);
@@ -40,5 +40,7 @@ class Product extends Model
         'name',
         'description',
         'price',
+        'is_featured',
+        'featured_order',
     ];
 }

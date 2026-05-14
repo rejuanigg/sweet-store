@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class ToggleFeaturedProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string|min:3|max:150',
-            'description'=>'required|string|min:3|max:5000',
-            'price'=>'required|numeric|min:0',
-            'categories' => 'required|array',
-            'categories.*' => 'integer|exists:categories,id',
-            'is_featured' => 'sometimes|boolean',
-            'featured_order' => 'nullable|integer|min:1|max:4',
+            'is_featured' => ['required', 'boolean'],
         ];
     }
 }

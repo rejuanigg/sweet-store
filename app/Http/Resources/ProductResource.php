@@ -22,7 +22,9 @@ class ProductResource extends JsonResource
             'categories' => CategoryResource::collection($this->categories),
             'images'=> ImageResource::collection($this->images),
             'califications'=> CalificationResource::collection($this->califications),
-            'stocks'=>StockResource::collection($this->stocks)
+            'stocks'=>StockResource::collection($this->stocks),
+            'is_featured' => $this->is_featured,
+            'featured_order' => $this->featured_order,
         ];
     }
 }
