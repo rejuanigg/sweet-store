@@ -10,6 +10,7 @@ use App\Http\Resources\SectionResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -50,6 +51,23 @@ class UserController extends Controller
         else{
             abort(400, 'Bad Request');
         }
+    }
+
+    public function updateRole(User $user, Request $request)
+    {
+        $validated = $request->validate([
+            'role' => 'required|in:owner,employed,client'
+        ]);
+
+        if($user->role === $validated['role']){
+            abort(400, 'Bad Request');
+        }
+
+        $user->update([
+            'role' => $validated['role']
+        ]);
+
+        return response()->json(['message' => 'Rol actualizado'], 200);
     }
 
     public function update(UpdateUserRequest $request)

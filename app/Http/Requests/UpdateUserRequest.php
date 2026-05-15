@@ -26,7 +26,6 @@ class UpdateUserRequest extends FormRequest
             "name"=>"string|min:1|max:100",
             "email"=>"string|email",
             "password"=>"min:8",
-            "role" => 'in:owner,employed,client',
         ];
     }
 }

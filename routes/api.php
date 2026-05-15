@@ -31,6 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/password', [UserController::class, 'change_password']);
     Route::delete('/delete_profile', [UserController::class, 'destroy']);
 
+    Route::patch('/users/{user}/role',[UserController::class, 'updateRole'])
+        ->middleware('role:owner');
+
     Route::patch('/products/{product}/featured', [ProductController::class, 'toggleFeatured'])
         ->middleware('role:owner,employed');
 

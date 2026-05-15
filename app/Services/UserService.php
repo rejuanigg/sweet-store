@@ -23,6 +23,7 @@ class UserService
         ]);
         return $user;
     }
+
     public function update(User $user, array $data)
     {
         $user->update($data);
