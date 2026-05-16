@@ -50,7 +50,7 @@ class UserController extends Controller
             return $resource->response()->setStatusCode(200);
         }
         else{
-            abort(400, 'Bad Request');
+            abort(422, 'La contraseña ingresada debe ser igual a la original.');
         }
     }
 
