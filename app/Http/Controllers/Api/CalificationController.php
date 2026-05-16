@@ -30,7 +30,7 @@ class CalificationController extends Controller
     {
         $authUser = Auth::user();
 
-        $access = in_array($authUser->role, ['employee', 'owner']);
+        $access = in_array($authUser->role, ['employed', 'owner']);
 
         $accessUser = $calification->user_id === $authUser->id;
 
