@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -79,9 +80,11 @@ class UserController extends Controller
         return $resource->response()->setStatusCode(200);
     }
 
-    public function destroy(User $user)
+    public function destroy()
     {
-        $this->service->destroy($user);
+        $authUser = Auth::user();
+
+        $this->service->destroy($authUser);
 
         return response()->noContent();
     }
