@@ -24,16 +24,73 @@ class OrderController extends Controller
 
     public function index()
     {
+        $admin = ['employed', 'owner'];
         $authUser = Auth::user();
+        $query = Order::query();
 
-        if (in_array($authUser->role, ['employed', 'owner']))
+        if (in_array($authUser->role,$admin))
             {
-                return OrderResource::collection(Order::all());
+                $orders = $query->orderBy('datetime', 'desc')->paginate(15);
+            }
+        else{
+                $query->where('user_id',$authUser->id);
+                $orders = $query->orderBy('datetime', 'desc')->paginate(5);
             }
 
-        $myOrders = Order::where('user_id', $authUser->id)->get();
+        return OrderResource::collection($orders);
+    }
 
-        return OrderResource::collection($myOrders);
+    public function active()
+    {
+        $admin = ['employed', 'owner'];
+        $authUser = Auth::user();
+        $query = Order::query();
+        $activeOrders = ['processing', 'waiting'];
+
+        if (in_array($authUser->role,$admin))
+            {
+                $query->whereIn('status', $activeOrders);
+                $orders = $query->orderBy('datetime', 'desc')->paginate(15);
+            }
+        else
+            {
+                $query->where('user_id',$authUser->id);
+                $query->whereIn('status', $activeOrders);
+
+                $orders = $query->orderBy('datetime', 'desc')->paginate(5);
+            }
+
+        return OrderResource::collection($orders);
+    }
+
+    public function historical()
+    {
+        $admin = ['employed', 'owner'];
+        $authUser = Auth::user();
+        $query = Order::query();
+        $historicalOrders = ['cancelled', 'completed'];
+
+        if (in_array($authUser->role,$admin))
+            {
+                $query->whereIn('status', $historicalOrders);
+                $orders = $query->orderBy('datetime', 'desc')->paginate(15);
+            }
+        else
+            {
+                $query->where('user_id',$authUser->id);
+                $query->whereIn('status', $historicalOrders);
+
+                $orders = $query->orderBy('datetime', 'desc')->paginate(5);
+            }
+
+        return OrderResource::collection($orders);
+    }
+
+    public function recent()
+    {
+        $query = Order::latest()->limit(10)->get();;
+
+        return OrderResource::collection($query);
     }
 
     public function show(Order $order)
@@ -61,9 +118,9 @@ class OrderController extends Controller
         return $resource->response()->setStatusCode(201);
     }
 
-public function update(Order $order, Request $request)
-{
-    return DB::transaction(function () use($order, $request){
+    public function update(Order $order, Request $request)
+    {
+        return DB::transaction(function () use($order, $request){
 
         $products = $order->orderDetails;
         $oldStatus = $order->status;
