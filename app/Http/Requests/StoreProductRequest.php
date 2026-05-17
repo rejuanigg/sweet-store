@@ -28,8 +28,6 @@ class StoreProductRequest extends FormRequest
             'price'=>'required|numeric|min:0',
             'categories' => 'required|array',
             'categories.*' => 'integer|exists:categories,id',
-            'is_featured' => 'sometimes|boolean',
-            'featured_order' => 'nullable|integer|min:1|max:4',
         ];
     }
 }
