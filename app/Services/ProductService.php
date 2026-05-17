@@ -53,11 +53,13 @@ class ProductService
         return $product->fresh(['images', 'stocks', 'categories']);
     }
 
-    
+
     public function update(Product $product, array $data)
     {
-        $categories = Arr::pull($data, 'categories');
-        $product->categories()->sync($categories);
+        if (isset($data['categories'])){
+            $categories = Arr::pull($data, 'categories');
+            $product->categories()->sync($categories);
+        }
         $product->update($data);
         return $product;
     }
