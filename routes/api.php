@@ -57,16 +57,13 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('role:owner,employed')
         ->only('store', 'update', 'destroy');
 
-    Route::apiResource('orders', OrderController::class)
-        ->only('store', 'show', 'index');
-
-    Route::patch('/orders/{id}',[OrderController::class, 'update'])
-        ->middleware('role:owner,employed');
-    Route::patch('/orders/{id}/cancel',[OrderController::class, 'cancel']);
-
-    Route::get('/orders/actives', [OrderController::class, 'actives']);
-    Route::get('/orders/historical', [OrderController::class, 'historical']);
     Route::get('/orders/recent', [OrderController::class, 'recent'])->middleware('role:owner,employed');
+    Route::get('/orders/active', [OrderController::class, 'active']);
+    Route::get('/orders/historical', [OrderController::class, 'historical']);
+    Route::patch('/orders/{id}/cancel', [OrderController::class, 'cancel']);
+    Route::patch('/orders/{id}', [OrderController::class, 'update'])->middleware('role:owner,employed');
+
+    Route::apiResource('orders', OrderController::class)->only('store', 'show', 'index');
 
     Route::apiResource('products.califications', CalificationController::class)
         ->only('store', 'update', 'destroy');
