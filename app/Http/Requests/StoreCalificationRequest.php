@@ -24,7 +24,7 @@ class StoreCalificationRequest extends FormRequest
     {
         return [
             'product_id'=>'required|exists:products,id',
-            'score'=>'required|numeric|min:1|max:10'
+            'score'=>'required|numeric|min:1|max:5'
         ];
     }
 }
