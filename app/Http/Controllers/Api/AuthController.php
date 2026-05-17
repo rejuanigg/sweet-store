@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -26,12 +27,9 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json([
-            'id' => $request->user()->id,
-            'role' => $request->user()->role,
-            'name' => $request->user()->name,
-            'email' => $request->user()->email
-        ]);
+        $user = $request->user();
+        $resource = new UserResource($user);
+        return $resource->response()->setStatusCode(200);
     }
 
     public function logout(Request $request)

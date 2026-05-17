@@ -6,7 +6,6 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\SectionResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
