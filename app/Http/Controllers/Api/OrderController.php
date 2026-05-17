@@ -21,7 +21,7 @@ class OrderController extends Controller
     {
         $admin = ['employed', 'owner'];
         $authUser = Auth::user();
-        $query = Order::query();
+        $query = Order::query()->with('orderDetails');
 
         if (in_array($authUser->role,$admin))
             {
@@ -39,7 +39,7 @@ class OrderController extends Controller
     {
         $admin = ['employed', 'owner'];
         $authUser = Auth::user();
-        $query = Order::query();
+        $query = Order::query()->with('orderDetails');
         $activeOrders = ['processing', 'waiting'];
 
         if (in_array($authUser->role,$admin))
@@ -62,7 +62,7 @@ class OrderController extends Controller
     {
         $admin = ['employed', 'owner'];
         $authUser = Auth::user();
-        $query = Order::query();
+        $query = Order::query()->with('orderDetails');
         $historicalOrders = ['cancelled', 'completed'];
 
         if (in_array($authUser->role,$admin))
@@ -149,7 +149,8 @@ class OrderController extends Controller
         }
 
         $order->update(['status' => $newStatus['status']]);
-        return $order;
+        $resource = new OrderResource($order);
+        return $resource->response()->setStatusCode(200);
     });
 }
 }
