@@ -101,6 +101,7 @@ class OrderController extends Controller
 
         if ($access || $accessUser)
             {
+                $order->load('orderDetails');
                 return new OrderResource($order);
             }
         else
