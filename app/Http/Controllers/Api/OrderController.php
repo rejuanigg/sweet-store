@@ -125,7 +125,7 @@ class OrderController extends Controller
         ]);
 
         if ($oldStatus === $newStatus['status']){
-            abort(400);
+            abort(400, 'El estado antiguo es el mismo que el estado nuevo, intentá con otro estado.');
         }
         else if($oldStatus == 'waiting' && $newStatus['status'] == 'cancelled'){
             foreach($products as $item){
@@ -135,7 +135,7 @@ class OrderController extends Controller
             }
         }
         else if($oldStatus == 'processing' && $newStatus['status'] == 'cancelled'){
-            abort(400);
+            abort(400, 'No puedes cancelar una orden si ya está en proceso.');
         }
         else if($oldStatus == 'cancelled' && ($newStatus['status'] == 'waiting' || $newStatus['status'] == 'processing')){
             foreach($products as $item){
@@ -145,12 +145,56 @@ class OrderController extends Controller
             }
         }
         else if($oldStatus == 'completed'){
-            abort(400);
+            abort(400, 'No puedes modificar una orden si ya fué completada');
         }
 
         $order->update(['status' => $newStatus['status']]);
         $resource = new OrderResource($order);
-        return $resource->response()->setStatusCode(200);
-    });
-}
+        return $resource->response()->setStatusCode(200, 'Orden cambiada correctamente');
+        }
+        );
+    }
+
+    public function cancel(Order $order, Request $request)
+    {
+
+        $authUser = Auth::user();
+
+        if($order->user_id !== $authUser->id){
+            abort(403, 'Usted no está autorizado para realizar cambios');
+        }
+
+        return DB::transaction(function () use($order, $request){
+
+        $products = $order->orderDetails;
+        $oldStatus = $order->status;
+        $newStatus = $request->validate([
+            'status' => 'required|in:cancelled'
+        ]);
+
+        if ($oldStatus === $newStatus['status']){
+            abort(400, 'El estado antiguo es el mismo que el estado nuevo, intentá con otro estado.');
+        }
+        else if($oldStatus == 'waiting' && $newStatus['status'] == 'cancelled'){
+            foreach($products as $item){
+                $stocks = $item->product->stocks->first();
+                $stocks->quantity += $item->quantity;
+                $stocks->save();
+            }
+        }
+        else if($oldStatus == 'processing' && $newStatus['status'] == 'cancelled'){
+            abort(400, 'No puedes cancelar una orden si ya está en proceso.');
+        }
+
+        else if($oldStatus == 'completed'){
+            abort(400, 'No puedes modificar una orden si ya fué completada');
+        }
+
+        $order->update(['status' => $newStatus['status']]);
+        $resource = new OrderResource($order);
+        return $resource->response()->setStatusCode(200, 'Orden cambiada correctamente');
+        }
+        );
+    }
+
 }
