@@ -24,7 +24,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name'=>'string|min:3|max:150',
-            'description'=>'string|min:3|max:5000',
+            'description'=>'string|min:3|max:70000',
             'price'=>'numeric|min:0',
             'categories' => 'array',
             'categories.*' => 'integer|exists:categories,id',
