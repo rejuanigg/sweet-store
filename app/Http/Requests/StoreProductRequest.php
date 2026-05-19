@@ -25,7 +25,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name'=>'required|string|min:3|max:150',
             'description'=>'required|string|min:3|max:70000',
-            'price'=>'required|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:9999999',
             'categories' => 'required|array',
             'categories.*' => 'integer|exists:categories,id',
         ];
