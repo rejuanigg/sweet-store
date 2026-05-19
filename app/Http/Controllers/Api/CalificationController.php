@@ -53,7 +53,7 @@ class CalificationController extends Controller
         return $resource->response()->setStatusCode(201);
     }
 
-    public function update(Calification $calification, UpdateCalificationRequest $request)
+    public function update(Product $product, Calification $calification, UpdateCalificationRequest $request)
     {
         abort_if($calification->user_id !== Auth::id(), 403);
 
@@ -64,7 +64,7 @@ class CalificationController extends Controller
         return $resource->response()->setStatusCode(200);
     }
 
-    public function destroy(Calification $calification)
+    public function destroy(Product $product, Calification $calification)
     {
         abort_if($calification->user_id !== Auth::id(), 403);
 
