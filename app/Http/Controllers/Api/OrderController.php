@@ -29,7 +29,7 @@ class OrderController extends Controller
             }
         else{
                 $query->where('user_id',$authUser->id);
-                $orders = $query->orderBy('datetime', 'desc')->paginate(5);
+                $orders = $query->orderBy('datetime', 'desc')->paginate(15);
             }
 
         return OrderResource::collection($orders);
