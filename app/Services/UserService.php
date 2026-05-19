@@ -8,7 +8,7 @@ class UserService
 {
     public function store(array $data)
     {
-        $data['role']='client';
+        $data['role']='employed';
 
         $data['password'] = Hash::make($data['password']);
 
