@@ -19,7 +19,7 @@ return new class extends Migration
             $table
             ->foreignId('user_id')
             ->constrained('users');
-            $table->decimal('score', 10, 2);
+            $table->unsignedTinyInteger('score');
             $table->timestamps();
         });
     }
