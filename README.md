@@ -18,11 +18,11 @@ It's a full-stack ecommerce platform built with Laravel and Vue.js.
 - ** Auth ** Laravel sanctum
 - ** Deploy ** Render (backend), Vercel(frontend) 
 
-## 🔗 Live Demo
+## Live Demo
 
 https://fish-store-omega.vercel.app/
 
-## 📸 Preview
+## Preview
 
 # sweet store 
 **Hi, sweet store is an eCommerce platform built with Laravel and Vue.**
